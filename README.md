@@ -1,5 +1,5 @@
 # Temporal-Frequency Co-Training for Time Series Semi-Supervised Learning
-This is the training code for our paper for our paper *"Temporal-Frequency Co-Training for Time Series Semi-Supervised Learning"*(AAAI-23).
+This is the training code for our paper *"Temporal-Frequency Co-Training for Time Series Semi-Supervised Learning"*(AAAI-23).
 
 ## Overview
 
