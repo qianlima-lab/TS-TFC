@@ -7,8 +7,7 @@ import torch.optim
 
 from ts_tfc_ssl.ts_data.preprocessing import load_data, transfer_labels, k_fold
 from ts_tfc_ssl.ts_model.loss import cross_entropy, reconstruction_loss
-from ts_tfc_ssl.ts_model.model import FCN, Classifier, base_Model
-from ts_tfc_ssl.ts_model.transformer_ts import Transformer
+from ts_tfc_ssl.ts_model.model import FCN, Classifier
 
 
 def set_seed(args):
@@ -22,10 +21,6 @@ def set_seed(args):
 def build_model(args):
     if args.backbone == 'fcn':
         model = FCN(args.num_classes, args.input_size)
-    elif args.backbone == 'transformer':
-        model = Transformer(dim=args.seq_len, depth=1, heads=4, dim_head=int(args.seq_len/4), mlp_dim=128)
-    elif args.backbone == 'tstcc_encoder':
-        model = base_Model(input_channels=args.input_size)
 
     if args.classifier == 'linear':
         classifier = Classifier(args.classifier_input, args.num_classes)
@@ -64,7 +59,6 @@ def convert_coeff(x, eps=1e-6):
     phase = torch.atan2(x.imag, x.real + eps)
     stack_r = torch.stack((amp, phase), -1)
     stack_r = stack_r.permute(0, 2, 1)
-    # print("test shape ", amp.shape, phase.shape, stack_r.shape)
     return stack_r, phase
 
 
@@ -130,7 +124,6 @@ def construct_graph_via_knn_cpl_nearind_gpu(data_embed, y_label, mask_label, dev
     for i in range(len(mask_label)):
         if mask_label[i] == 0:
             end_knn_label[i] = y_label[i]
-            # all_knn_label[i] = y_label[i]
         else:
             class_counter[all_knn_label[i]] += 1
 

@@ -49,12 +49,6 @@ class FCN(nn.Module):
                 vis_out = self.conv_block3(vis_out)
                 return self.network(x), vis_out
 
-        # vis_out = self.conv_block1(x)
-        # vis_out = self.conv_block2(vis_out)
-        # print("vis_out2.shape = ", vis_out.shape)
-        # vis_out = self.conv_block3(vis_out)
-        # print("vis_out3.shape = ", vis_out.shape)
-
         return self.network(x)
 
 
@@ -81,49 +75,3 @@ class ProjectionHead(nn.Module):
 
     def forward(self, x):
         return self.projection_head(x)
-
-
-class base_Model(nn.Module):
-    def __init__(self, input_channels=1, kernel_size=25, stride=3, final_out_channels=128, dropout=0.35):
-        ## HAR input_channels = 9, kernel_size=8, stride=1, final_out_channels=128, features_len=18
-        ## pFD, input_channels=1, kernel_size=32, stride=4, final_out_channels=128, features_len=162
-        ## SleepEDF input_channels=1, kernel_size=25, stride=3, final_out_channels=128, features_len=127
-        super(base_Model, self).__init__()
-
-        self.conv_block1 = nn.Sequential(
-            nn.Conv1d(input_channels, 32, kernel_size=kernel_size,
-                      stride=stride, bias=False, padding=(kernel_size//2)),
-            nn.BatchNorm1d(32),
-            nn.ReLU(),
-            nn.MaxPool1d(kernel_size=2, stride=2, padding=1),
-            nn.Dropout(dropout)
-        )
-
-        self.conv_block2 = nn.Sequential(
-            nn.Conv1d(32, 64, kernel_size=8, stride=1, bias=False, padding=4),
-            nn.BatchNorm1d(64),
-            nn.ReLU(),
-            nn.MaxPool1d(kernel_size=2, stride=2, padding=1)
-        )
-
-        self.conv_block3 = nn.Sequential(
-            nn.Conv1d(64, final_out_channels, kernel_size=8, stride=1, bias=False, padding=4),
-            nn.BatchNorm1d(final_out_channels),
-            nn.ReLU(),
-            nn.MaxPool1d(kernel_size=2, stride=2, padding=1),
-        )
-
-        # model_output_dim = configs.features_len
-        # self.logits = nn.Linear(model_output_dim * configs.final_out_channels, configs.num_classes)
-
-    def forward(self, x_in):
-        x = self.conv_block1(x_in)
-        x = self.conv_block2(x)
-        x = self.conv_block3(x)
-
-        # print("x.shape = ", x.shape)
-
-        x_flat = x.reshape(x.shape[0], -1)
-        # print("x_flat.shape = ", x_flat.shape)
-        # logits = self.logits(x_flat)
-        return x_flat
