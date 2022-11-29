@@ -15,4 +15,9 @@ To obtain stable evaluation results, we limit the average number of samples incl
 Therefore, we utilize 106 datasets from the original 128 UCR datasets for experimental analysis.
 
 ## Usage
-We will open the source code soon.
+To train a TS-TFC model on a dataset, run
+
+```bash
+python ts_tfc_ssl/main_ts_tfc.py --dataset [name of the dataset you want to train]  --labeled_ratio [labeling ratio of the dataset] ...
+```
+For detailed options and examples, please refer to parser setup in ```ts_tfc_ssl/main_ts_tfc.py```
