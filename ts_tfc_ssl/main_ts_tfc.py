@@ -128,6 +128,11 @@ if __name__ == '__main__':
         model.load_state_dict(model_init_state)
         classifier.load_state_dict(classifier_init_state)
         projection_head.load_state_dict(projection_head_init_state)
+
+        model_feq.load_state_dict(model_feq_init_state)   ## frequency
+        classifier_feq.load_state_dict(classifier_feq_init_state)
+        projection_head_feq.load_state_dict(projection_head_feq_init_state)
+        
         print('{} fold start training and evaluate'.format(i))
 
         train_target = train_targets[i]
